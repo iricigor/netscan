@@ -3,7 +3,7 @@ name: Build and Release
 on:
   push:
     branches:
-      - master
+      - main
     tags:
       - 'v*.*.*'
   pull_request:
@@ -34,13 +34,25 @@ jobs:
           -p:IncludeNativeLibrariesForSelfExtract=true
           -o publish
 
+      - name: Set release tag
+        if: github.event_name != 'pull_request'
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.ref }}" -like "refs/tags/*") {
+            echo "tag=${{ github.ref_name }}" >> $env:GITHUB_OUTPUT
+          } else {
+            echo "tag=build-${{ github.run_number }}" >> $env:GITHUB_OUTPUT
+          }
+
       - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: github.event_name != 'pull_request'
         uses: softprops/action-gh-release@v2
         with:
-          name: NetScan ${{ github.ref_name }}
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: NetScan ${{ steps.version.outputs.tag }}
           body: |
-            ## NetScan ${{ github.ref_name }}
+            ## NetScan ${{ steps.version.outputs.tag }}
 
             Self-contained single-file Windows executable — no installation required.
 
