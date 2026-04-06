@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "ry8ykaY3VFU=",
+  "success": true,
+  "projectFilePath": "/home/runner/work/netscan/netscan/NetScan.csproj",
+  "expectedPackageFiles": [
+    "/home/runner/.nuget/packages/microsoft.windowsdesktop.app.ref/8.0.25/microsoft.windowsdesktop.app.ref.8.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}
